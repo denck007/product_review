@@ -1,0 +1,9 @@
+# Run with: docker run -it -v /home/neil/product_review/frontend:/frontend npm_vue_init:0 vue create frontend
+
+#Base image
+FROM node:lts-alpine
+
+WORKDIR /app
+
+#Install serve package
+RUN npm i -g @vue/cli
