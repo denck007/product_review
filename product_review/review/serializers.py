@@ -24,7 +24,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             "product",
             "brand",
             "tags",
-            "score",
+            "rating",
             "notes",
             "store",
             "price",

@@ -32,7 +32,7 @@ class Review(models.Model):
     product = models.CharField(max_length=255, null=False)
     user = models.ForeignKey(User, related_name="reviews", on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, related_name="reviews")
-    score = models.PositiveSmallIntegerField(null=False, default=3)
+    rating = models.PositiveSmallIntegerField(null=False, default=3)
 
     notes = models.TextField(max_length=4096, blank=True, null=True)
     store = models.CharField(max_length=255, blank=True, null=True)

@@ -3,7 +3,7 @@
     <div class="container">
       <div align="center" justify="center">
         <h1 class="title">{{ review.product }}</h1>
-        <h2 class="subtitle">Score: {{ review.score }}/5</h2>
+        <h2 class="subtitle">Rating: {{ review.rating }}/5</h2>
         <h3>
           Reviewed
           <Timeago :datetime="review.created_at" />

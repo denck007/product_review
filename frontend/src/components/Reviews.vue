@@ -4,7 +4,7 @@
       <tr>
         <th>Photo</th>
         <th>Name</th>
-        <th>Score</th>
+        <th>Rating</th>
         <th align="center">Tags</th>
         <th>Price</th>
         <th>Brand</th>
@@ -25,7 +25,7 @@
             <strong>{{ review.product }}</strong>
           </router-link>
         </td>
-        <td>{{ review.score }}/5</td>
+        <td>{{ review.rating }}/5</td>
         <td width="20%"><TagsBox v-bind:tags="review.tags" /></td>
         <td>
           <div v-if="review.price">${{ review.price }}</div>
