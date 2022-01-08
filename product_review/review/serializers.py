@@ -1,3 +1,4 @@
+from django.utils.text import slugify
 from rest_framework import serializers
 
 from .models import Review, Tag
@@ -12,6 +13,12 @@ class TagSerializer(serializers.ModelSerializer):
             "slug",
             "get_absolute_url",
         )
+
+    def create(self, validated_data):
+        print(f"TagSerializer: {validated_data=}")
+        slug = slugify(validated_data.name)
+        tag = Tag.objects.get_or_create(**validated_data, slug=slug)
+        return tag
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -36,11 +43,10 @@ class ReviewSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        tags_data = validated_data.pop("tags")
+        tags = validated_data.pop("tags")
+        review = Review.objects.create(**validated_data)
 
-        tags = []
-        for tag_data in tags_data:
-            tags.append = Tag.objects.get_or_create(**tag_data)
-        review = Review.objects.create(tags=tags, **validated_data)
+        for tag in tags:
+            review.tags.add(tag)
 
         return review

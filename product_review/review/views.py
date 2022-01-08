@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db.models import Q
 from django.http.response import Http404
 
@@ -31,6 +32,9 @@ class ReviewDetailByTagList(APIView):
 
 
 class ReviewDetail(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
     def get_object(self, review_id):
         try:
             return Review.objects.get(pk=review_id)
@@ -41,6 +45,26 @@ class ReviewDetail(APIView):
         review = self.get_object(review_id)
         serializer = ReviewSerializer(review)
         return Response(serializer.data)
+
+    def post(self, request, format=None):
+
+        tags_data = request.data.pop("tags")
+        tags = [Tag.objects.get_or_create(name=tag["name"], user=request.user)[0] for tag in tags_data]
+        request.data["tags"] = []
+
+        serializer = ReviewSerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                serializer.save(user=request.user, tags=tags)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            except Exception as e:
+                import sys
+
+                exc_info = sys.exc_info()
+                print(exc_info)
+
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TagDetail(APIView):
@@ -53,6 +77,16 @@ class TagDetail(APIView):
     def get(self, request, tag_slug, format=None):
         tag = self.get_object(tag_slug)
         serializer = TagSerializer(tag)
+        return Response(serializer.data)
+
+
+class TagList(APIView):
+    authentication_classes = [authentication.TokenAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+        tags = Tag.objects.filter(user=request.user)
+        serializer = TagSerializer(tags, many=True)
         return Response(serializer.data)
 
 
