@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import store from '../store'
 
 import MyAccount from '../views/MyAccount.vue'
+import MyReviews from '../views/MyReviews.vue'
 import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import ReviewDetail from '../views/ReviewDetail.vue'
@@ -39,13 +40,21 @@ const routes = [
     }
   },
   {
-    path: '/reviews/:review_id',
-    name: 'Review',
-    component: ReviewDetail,
+    path: '/reviews',
+    name: 'MyReviews',
+    component: MyReviews,
     meta: {
-      requireLogin: true
+      requireLogin: false
     }
   },
+  //{
+  //  path: '/reviews/:review_id',
+  //  name: 'Review',
+  //  component: ReviewDetail,
+  //  meta: {
+  //    requireLogin: true
+  //  }
+  //},
   {
     path: '/tags/:tag_slug',
     name: 'ReviewsByTag',
@@ -61,12 +70,15 @@ const router = new VueRouter({
   mode: 'history',
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
-    next({ name: 'Login', query: { to: to.path } });
-  } else {
-    next()
-  }
-})
+//
+//router.beforeEach((to, from, next) => {
+//  if (to.matched.some(record => record.meta.requireLogin) && !store.state.isAuthenticated) {
+//    console.log(" store.state.isAuthenticated: " + store.state.isAuthenticated)
+//    next({ name: 'Login', query: { to: to.path } });
+//  } else {
+//    console.log("store.state.isAuthenticated: " + store.state.isAuthenticated)
+//    next()
+//  }
+//})
 
 export default router

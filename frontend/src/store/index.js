@@ -21,7 +21,6 @@ export default new Vuex.Store({
     },
     setIsLoading(state, status) {
       state.isLoading = status
-      localStorage.setItem('cart', JSON.stringify(state.cart))
     },
     setToken(state, token) {
       state.token = token

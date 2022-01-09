@@ -151,7 +151,7 @@ export default {
       this.$store.commit("setIsLoading", true);
       await axios
         .get(
-          `/api/v1/reviews/?limit=${this.perPage}&offset=${
+          `/api/v1/reviews?limit=${this.perPage}&offset=${
             this.perPage * (this.currentPage - 1)
           }`
         )

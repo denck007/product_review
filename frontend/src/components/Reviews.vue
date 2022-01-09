@@ -101,13 +101,16 @@ export default {
     return {
       reviews: [],
       currentPage: 1,
-      perPage: 3,
-      total: 10,
+      perPage: 10,
+      total: 0,
     };
   },
 
   props: {
-    old_reviews: [],
+    filters: {
+      tag: "",
+      search: "",
+    },
   },
   components: {
     TimeAgo,
@@ -124,11 +127,20 @@ export default {
 
     async getMyReviews() {
       this.$store.commit("setIsLoading", true);
+
+      let query_params = "";
+      if (this.filters.tag != "") {
+        query_params += `&tags__name=${this.filters.tag}`;
+      }
+      if (this.filters.search != "") {
+        query_params += `&search=${this.filters.search}`;
+      }
+      console.log("query params: " + query_params);
       await axios
         .get(
-          `/api/v1/reviews/?limit=${this.perPage}&offset=${
+          `/api/v1/reviews?limit=${this.perPage}&offset=${
             this.perPage * (this.currentPage - 1)
-          }`
+          }${query_params}`
         )
         .then((response) => {
           this.reviews = [];

@@ -24,13 +24,13 @@
       >
         <div class="navbar-start">
           <div class="navbar-item">
-            <form method="get" action="/search">
+            <form method="get" action="/reviews">
               <div class="field has-addons">
                 <input
                   type="text"
                   class="input"
                   placeholder="What are you looking for?"
-                  name="query"
+                  name="search"
                 />
 
                 <div class="control">
