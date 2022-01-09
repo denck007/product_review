@@ -23,10 +23,7 @@
 
       <TagsBox v-bind:tags="review.tags" />
 
-      <div v-if="review.notes">
-        Brand:
-        <div class="box">{{ review.brand }}</div>
-      </div>
+      <div v-if="review.notes">Brand: {{ review.brand }}</div>
       <div v-if="review.product_url">
         Store:
         <a

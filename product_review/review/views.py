@@ -1,9 +1,10 @@
 from django.db.models import Q
-
-from rest_framework import status, authentication, permissions, pagination
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, authentication, permissions, mixins, filters
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.response import Response
+
 
 from .models import Review, Tag
 from .serializers import ReviewSerializer, TagSerializer
@@ -14,6 +15,9 @@ class ReviewModelViewSet(ModelViewSet):
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
     paginate_by = 10
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ["product", "tags__name", "notes", "brand", "store"]
+    search_fields = ["product", "tags__name", "notes", "brand", "store"]
 
     def get_queryset(self):
         return Review.objects.filter(user=self.request.user).all()
@@ -56,9 +60,3 @@ class TagModelViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Tag.objects.filter(user=self.request.user).all()
-
-
-class ReviewModelViewSetPagination(pagination.PageNumberPagination):
-    page_size = 10
-    page_size_query_param = "page_size"
-    max_page_size = 100
