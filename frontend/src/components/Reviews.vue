@@ -25,7 +25,17 @@
             <strong>{{ review.product }}</strong>
           </router-link>
         </td>
-        <td>{{ review.rating }}/5</td>
+        <td>
+          <b-rate
+            v-model="review.rating"
+            :max="5"
+            icon-pack="fas"
+            size="is-small"
+            :show-score="false"
+            :spaced="false"
+            :disabled="true"
+          ></b-rate>
+        </td>
         <td width="20%"><TagsBox v-bind:tags="review.tags" /></td>
         <td>
           <div v-if="review.price">${{ review.price }}</div>

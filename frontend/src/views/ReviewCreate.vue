@@ -10,7 +10,16 @@
               <input type="text" class="input" v-model="product" />
             </div>
           </div>
-
+          <b-rate
+            v-model="rating"
+            :max="5"
+            icon-pack="fas"
+            size="is-large"
+            :show-score="false"
+            :spaced="true"
+            :rtl="false"
+          ></b-rate>
+          <!--
           <div class="field">
             <label>Rating</label>
             <div class="control">
@@ -23,6 +32,7 @@
               />
             </div>
           </div>
+          -->
           <b-field label="Tags">
             <b-taginput
               v-model="tags_selected"

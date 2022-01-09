@@ -2,8 +2,18 @@
   <div class="page-review">
     <div class="container">
       <div align="center" justify="center">
-        <h1 class="title">{{ review.product }}</h1>
-        <h2 class="subtitle">Rating: {{ review.rating }}/5</h2>
+        <h1 class="title">
+          {{ review.product }}
+        </h1>
+        <b-rate
+          v-model="review.rating"
+          :max="5"
+          icon-pack="fas"
+          size="is-medium"
+          :show-score="false"
+          :spaced="true"
+          :disabled="true"
+        ></b-rate>
         <h3>
           Reviewed
           <TimeAgo :datetime="review.created_at" />
