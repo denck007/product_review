@@ -44,7 +44,7 @@
           </div>
           <div v-else>{{ review.store }}</div>
         </td>
-        <td><Timeago :datetime="review.created_at" /></td>
+        <td><TimeAgo :datetime="review.created_at" /></td>
         <td>{{ review.notes }}</td>
       </tr>
     </tbody>
@@ -52,16 +52,16 @@
 </template>
 
 <script>
-import { Timeago } from "vue2-timeago";
+import { TimeAgo } from "vue2-timeago";
 import TagsBox from "@/components/TagsBox.vue";
 export default {
   name: "Reviews",
 
   props: {
-    reviews: [Object],
+    reviews: [],
   },
   components: {
-    Timeago,
+    TimeAgo,
     TagsBox,
   },
   methods: {

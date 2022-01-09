@@ -49,7 +49,7 @@ class ReviewDetail(APIView):
     def post(self, request, format=None):
 
         tags_data = request.data.pop("tags")
-        tags = [Tag.objects.get_or_create(name=tag["name"], user=request.user)[0] for tag in tags_data]
+        tags = [Tag.objects.get_or_create(name=tag, user=request.user)[0] for tag in tags_data]
         request.data["tags"] = []
 
         serializer = ReviewSerializer(data=request.data)

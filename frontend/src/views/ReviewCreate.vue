@@ -2,7 +2,7 @@
   <div class="page-create-review">
     <h1>Create a new Review</h1>
     <div class="columns is-multiline is-centered">
-      <div class="column is-6">
+      <div class="column is-6 box">
         <div>
           <div class="field">
             <label>Product Name</label>
@@ -23,19 +23,19 @@
               />
             </div>
           </div>
-
-          <label>Tags</label>
-          <div class="select is-multiple">
-            <select multiple size="6" v-model="selected_tags">
-              <option
-                v-for="tag in all_tags"
-                v-bind:key="tag.name"
-                v-bind:value="tag"
-              >
-                {{ tag.name }}
-              </option>
-            </select>
-          </div>
+          <b-field label="Tags">
+            <b-taginput
+              v-model="tags_selected"
+              :data="tags_filtered"
+              autocomplete
+              :allow-new="true"
+              :open-on-focus="false"
+              icon="label"
+              placeholder="Add a tag"
+              @typing="getFilteredTags"
+            >
+            </b-taginput>
+          </b-field>
 
           <div class="field">
             <label>Store</label>
@@ -77,7 +77,7 @@
               />
             </div>
           </div>
-
+          <div>Upload an image - use the Buefy upload tool</div>
           <button class="button is-dark" @click="submitForm">Create</button>
         </div>
       </div>
@@ -98,8 +98,9 @@ export default {
       price: "",
       product_url: "",
       notes: "",
-      all_tags: [],
-      selected_tags: [],
+      tags_all: [],
+      tags_filtered: [],
+      tags_selected: [],
     };
   },
 
@@ -128,7 +129,7 @@ export default {
           price: this.price,
           product_url: this.product_url,
           notes: this.notes,
-          tags: this.selected_tags,
+          tags: this.tags_selected,
         };
 
         await axios
@@ -152,13 +153,21 @@ export default {
       await axios
         .get("/api/v1/tags/")
         .then((response) => {
-          this.all_tags = response.data;
+          const all_tags = [];
+          for (let i = 0; i < response.data.length; i++) {
+            all_tags.push(response.data[i].name);
+          }
+          this.all_tags = all_tags;
         })
         .catch((errror) => {
           console.log(error);
         });
-
       this.$store.commit("setIsLoading", false);
+    },
+    getFilteredTags(text) {
+      this.tags_filtered = this.all_tags.filter((option) => {
+        return option.toString().toLowerCase().indexOf(text.toLowerCase()) >= 0;
+      });
     },
   },
 };

@@ -15,7 +15,7 @@
 export default {
   name: "TagsBox",
   props: {
-    tags: Object,
+    tags: [],
   },
 };
 </script>

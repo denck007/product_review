@@ -20,7 +20,6 @@ class TagSerializer(serializers.ModelSerializer):
         tag = Tag.objects.get_or_create(**validated_data, slug=slug)
         return tag
 
-
 class ReviewSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
 

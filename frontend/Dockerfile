@@ -1,7 +1,7 @@
 # docker run -it -v /home/neil/product_review/frontend:/frontend product_review_frontend:0.1 
 
 #Base image
-FROM node:lts-alpine
+FROM node:lts
 
 #Install serve package
 RUN npm i -g @vue/cli

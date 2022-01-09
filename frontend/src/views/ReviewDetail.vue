@@ -6,7 +6,7 @@
         <h2 class="subtitle">Rating: {{ review.rating }}/5</h2>
         <h3>
           Reviewed
-          <Timeago :datetime="review.created_at" />
+          <TimeAgo :datetime="review.created_at" />
         </h3>
       </div>
       <hr />
@@ -51,7 +51,7 @@
 
 <script>
 import axios from "axios";
-import { Timeago } from "vue2-timeago";
+import { TimeAgo } from "vue2-timeago";
 import TagsBox from "@/components/TagsBox.vue";
 export default {
   name: "ReviewDetail",
@@ -61,7 +61,7 @@ export default {
     };
   },
   components: {
-    Timeago,
+    TimeAgo,
     TagsBox,
   },
   mounted() {

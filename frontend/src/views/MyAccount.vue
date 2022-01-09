@@ -8,7 +8,9 @@
         <button @click="logout()" class="button is-danger">Log out</button>
       </div>
       <hr />
-      <div class="column is-12">
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-9 box">
         <h2 class="subtitle">My reviews</h2>
         <Reviews v-bind:reviews="reviews" />
       </div>
