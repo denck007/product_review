@@ -19,27 +19,15 @@
             :spaced="true"
             :rtl="false"
           ></b-rate>
-          <!--
-          <div class="field">
-            <label>Rating</label>
-            <div class="control">
-              <input
-                type="number"
-                class="input"
-                min="1"
-                max="5"
-                v-model="rating"
-              />
-            </div>
-          </div>
-          -->
+
           <b-field label="Tags">
             <b-taginput
               v-model="tags_selected"
               :data="tags_filtered"
               autocomplete
+              :keep-first="true"
               :allow-new="true"
-              :open-on-focus="false"
+              :open-on-focus="true"
               icon="label"
               placeholder="Add a tag"
               @typing="getFilteredTags"
@@ -104,7 +92,7 @@ export default {
       product: "",
       store: "",
       brand: "",
-      rating: "",
+      rating: 3,
       price: "",
       product_url: "",
       notes: "",
@@ -163,11 +151,12 @@ export default {
       await axios
         .get("/api/v1/tags/")
         .then((response) => {
-          const all_tags = [];
+          const tags_all = [];
           for (let i = 0; i < response.data.length; i++) {
-            all_tags.push(response.data[i].name);
+            tags_all.push(response.data[i].name);
           }
-          this.all_tags = all_tags;
+          this.tags_all = tags_all;
+          this.tags_filtered = tags_all;
         })
         .catch((errror) => {
           console.log(error);
@@ -175,7 +164,7 @@ export default {
       this.$store.commit("setIsLoading", false);
     },
     getFilteredTags(text) {
-      this.tags_filtered = this.all_tags.filter((option) => {
+      this.tags_filtered = this.tags_all.filter((option) => {
         return option.toString().toLowerCase().indexOf(text.toLowerCase()) >= 0;
       });
     },
