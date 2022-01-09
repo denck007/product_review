@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 import store from '../store'
 
 import MyAccount from '../views/MyAccount.vue'
@@ -7,6 +8,8 @@ import Login from '../views/Login.vue'
 import ReviewDetail from '../views/ReviewDetail.vue'
 import ReviewCreate from '../views/ReviewCreate.vue'
 import ReviewsByTag from '../views/ReviewsByTag.vue'
+
+Vue.use(VueRouter)
 
 const routes = [
   {
