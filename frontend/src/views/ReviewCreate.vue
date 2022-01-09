@@ -133,7 +133,7 @@ export default {
         };
 
         await axios
-          .post("/api/v1/reviews/create/", data)
+          .post("/api/v1/reviews/", data)
           .then((response) => {
             this.$router.push("/");
           })

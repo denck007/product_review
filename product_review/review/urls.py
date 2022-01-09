@@ -1,13 +1,12 @@
-from django.urls import path, include, re_path
+from django.urls import path
 
 from review import views
 
 urlpatterns = [
     # path('products/search/', views.search),
-    path("reviews/", views.ReviewDetailList.as_view()),
+    path("tags/", views.TagModelViewSet.as_view({"get": "list", "post": "create"})),
+    path("tags/<int:pk>/", views.TagModelViewSet.as_view({"get": "retrieve"})),
+    path("reviews/", views.ReviewModelViewSet.as_view({"get": "list", "post": "create"})),
+    path("reviews/<int:pk>/", views.ReviewModelViewSet.as_view({"get": "retrieve"})),
     path("reviews/tag/<str:tag_slug>", views.ReviewDetailByTagList.as_view()),
-    path("reviews/create/", views.ReviewDetail.as_view()),
-    path("reviews/<int:review_id>/", views.ReviewDetail.as_view()),
-    path("tags/", views.TagList.as_view()),
-    path("tags/<str:tag_slug>", views.TagDetail.as_view()),
 ]
