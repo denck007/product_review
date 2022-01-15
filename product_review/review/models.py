@@ -8,11 +8,97 @@ import os
 from PIL import Image
 
 
+class Product(models.Model):
+    product = models.CharField(max_length=255, null=False)
+    slug = models.SlugField(unique=False, blank=True, null=True)
+    user = models.ForeignKey(User, related_name="user_products", on_delete=models.CASCADE)
+    # tags = models.ManyToManyField(Tag, related_name="products")
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    indexes = [
+        models.Index(fields=["user", "product"]),
+    ]
+
+    class Meta:
+        ordering = [
+            "-created_at",
+        ]
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.product)
+        super(self.__class__, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user} - {self.product} - {self.created_at:%Y-%m-%d}"
+
+    def get_absolute_url(self):
+        return f"{settings.API_HOST_URL}/products/{self.id}"
+
+
+class Brand(models.Model):
+    brand = models.CharField(max_length=255, null=False)
+    slug = models.SlugField(unique=False, blank=True, null=True)
+    user = models.ForeignKey(User, related_name="user_brands", on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    indexes = [
+        models.Index(fields=["user", "brand"]),
+    ]
+
+    class Meta:
+        ordering = [
+            "-created_at",
+        ]
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.brand)
+        super(self.__class__, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user} - {self.brand} - {self.created_at:%Y-%m-%d}"
+
+    def get_absolute_url(self):
+        return f"{settings.API_HOST_URL}/brands/{self.id}"
+
+
+class Store(models.Model):
+    store = models.CharField(max_length=255, null=False)
+    slug = models.SlugField(unique=False, blank=True, null=True)
+    user = models.ForeignKey(User, related_name="user_stores", on_delete=models.CASCADE)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    indexes = [
+        models.Index(fields=["user", "store"]),
+    ]
+
+    class Meta:
+        ordering = [
+            "-created_at",
+        ]
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.store)
+        super(self.__class__, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user} - {self.store} - {self.created_at:%Y-%m-%d}"
+
+    def get_absolute_url(self):
+        return f"{settings.API_HOST_URL}/stores/{self.id}"
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=255, null=False)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=False, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, related_name="tags", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="user_tags", on_delete=models.CASCADE)
+
+    indexes = [
+        models.Index(fields=["user", "name"]),
+    ]
 
     class Meta:
         ordering = ("name",)
@@ -29,14 +115,14 @@ class Tag(models.Model):
 
 
 class Review(models.Model):
-    product = models.CharField(max_length=255, null=False)
+    product = models.ForeignKey(Product, related_name="reviews", on_delete=models.CASCADE)
     user = models.ForeignKey(User, related_name="reviews", on_delete=models.CASCADE)
     tags = models.ManyToManyField(Tag, related_name="reviews")
-    rating = models.PositiveSmallIntegerField(null=False, default=3)
+    store = models.ForeignKey(Store, related_name="reviews", on_delete=models.CASCADE, blank=True, null=True)
+    brand = models.ForeignKey(Brand, related_name="reviews", on_delete=models.CASCADE, blank=True, null=True)
 
+    rating = models.PositiveSmallIntegerField(null=False, default=3)
     notes = models.TextField(max_length=4096, blank=True, null=True)
-    store = models.CharField(max_length=255, blank=True, null=True)
-    brand = models.CharField(max_length=255, blank=True, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
     product_url = models.URLField(blank=True, null=True)
 
@@ -44,6 +130,9 @@ class Review(models.Model):
 
     image = models.ImageField(upload_to="product_images/", blank=True, null=True)
     thumbnail = models.ImageField(upload_to="product_images/thumbnails/", blank=True, null=True)
+    indexes = [
+        models.Index(fields=["user", "product", "tags", "store", "brand"]),
+    ]
 
     class Meta:
         ordering = [

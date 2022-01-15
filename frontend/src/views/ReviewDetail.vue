@@ -3,7 +3,7 @@
     <div class="container">
       <div align="center" justify="center">
         <h1 class="title">
-          {{ review.product }}
+          {{ review.product.product }}
         </h1>
         <b-rate
           v-model="review.rating"
@@ -23,7 +23,7 @@
 
       <TagsBox v-bind:tags="review.tags" />
 
-      <div v-if="review.notes">Brand: {{ review.brand }}</div>
+      <div v-if="review.notes">Brand: {{ review.brand.brand }}</div>
       <div v-if="review.product_url">
         Store:
         <a
@@ -33,7 +33,7 @@
           >{{ review.store }}</a
         >
       </div>
-      <div v-else>Store: {{ review.store }}</div>
+      <div v-else>Store: {{ review.store.store }}</div>
       <div v-if="review.price">
         <p>Price: ${{ review.price }}</p>
       </div>

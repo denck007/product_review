@@ -1,7 +1,55 @@
 from django.utils.text import slugify
 from rest_framework import serializers
 
-from .models import Review, Tag
+from .models import Brand, Product, Review, Store, Tag
+
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = (
+            "id",
+            "product",
+            "slug",
+            "get_absolute_url",
+        )
+
+    def create(self, validated_data):
+        slug = slugify(validated_data.product)
+        product = Product.objects.get_or_create(**validated_data, slug=slug)
+        return product
+
+
+class BrandSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = (
+            "id",
+            "brand",
+            "slug",
+            "get_absolute_url",
+        )
+
+    def create(self, validated_data):
+        slug = slugify(validated_data.brand)
+        brand = Brand.objects.get_or_create(**validated_data, slug=slug)
+        return brand
+
+
+class StoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Store
+        fields = (
+            "id",
+            "store",
+            "slug",
+            "get_absolute_url",
+        )
+
+    def create(self, validated_data):
+        slug = slugify(validated_data.store)
+        store = Store.objects.get_or_create(**validated_data, slug=slug)
+        return store
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -15,13 +63,16 @@ class TagSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        print(f"TagSerializer: {validated_data=}")
         slug = slugify(validated_data.name)
         tag = Tag.objects.get_or_create(**validated_data, slug=slug)
         return tag
 
+
 class ReviewSerializer(serializers.ModelSerializer):
     tags = TagSerializer(many=True)
+    product = ProductSerializer()
+    store = StoreSerializer()
+    brand = BrandSerializer()
 
     class Meta:
         model = Review

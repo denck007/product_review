@@ -41,7 +41,7 @@
 
         <b-table-column field="product" label="Product" sortable v-slot="props">
           <router-link :to="`/reviews/${props.row.id}`">
-            <strong>{{ props.row.product }}</strong>
+            <strong>{{ props.row.product.product }}</strong>
           </router-link>
         </b-table-column>
 
@@ -54,7 +54,7 @@
         </b-table-column>
 
         <b-table-column label="Brand" v-slot="props">
-          {{ props.row.brand }}
+          {{ props.row.brand.brand }}
         </b-table-column>
 
         <b-table-column label="Created" v-slot="props">
@@ -75,8 +75,8 @@
                     <strong>{{ props.row.product }}</strong>
                   </router-link>
                   <div :v-if="props.row.price">${{ props.row.price }}</div>
-                  <div :v-if="props.row.store">
-                    {{ props.row.store }}
+                  <div :v-if="props.row.store.store">
+                    {{ props.row.store.store }}
                   </div>
                   <div>
                     {{ props.row.notes }}

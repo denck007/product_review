@@ -1,82 +1,82 @@
 <template>
   <div class="page-create-review">
-    <h1>Create a new Review</h1>
-    <div class="columns is-multiline is-centered">
-      <div class="column is-6 box">
-        <div>
-          <div class="field">
-            <label>Product Name</label>
-            <div class="control">
-              <input type="text" class="input" v-model="product" />
-            </div>
-          </div>
-          <b-rate
-            v-model="rating"
-            :max="5"
-            icon-pack="fas"
-            size="is-large"
-            :show-score="false"
-            :spaced="true"
-            :rtl="false"
-          ></b-rate>
+    <div class="container">
+      <h1 class="title">Create a new Review</h1>
+      <div class="columns is-multiline is-centered">
+        <div class="column is-9 box">
+          <div>
+            <ProductAutocompleteField
+              v-on:product="(option) => (product = option)"
+            />
 
-          <b-field label="Tags">
-            <b-taginput
-              v-model="tags_selected"
-              :data="tags_filtered"
-              autocomplete
-              :keep-first="true"
-              :allow-new="true"
-              :open-on-focus="true"
-              icon="label"
-              placeholder="Add a tag"
-              @typing="getFilteredTags"
-            >
-            </b-taginput>
-          </b-field>
+            <b-rate
+              v-model="rating"
+              :max="5"
+              icon-pack="fas"
+              size="is-large"
+              :show-score="false"
+              :spaced="true"
+              :rtl="false"
+            ></b-rate>
 
-          <div class="field">
-            <label>Store</label>
-            <div class="control">
-              <input type="text" class="input" v-model="store" />
-            </div>
-          </div>
+            <b-field label="Tags">
+              <b-taginput
+                v-model="tags_selected"
+                :data="tags_filtered"
+                autocomplete
+                :keep-first="true"
+                :allow-new="true"
+                :open-on-focus="true"
+                icon="label"
+                placeholder="Add a tag"
+                @typing="getFilteredTags"
+              >
+              </b-taginput>
+            </b-field>
 
-          <div class="field">
-            <label>Brand</label>
-            <div class="control">
-              <input type="text" class="input" v-model="brand" />
+            <div class="field">
+              <label>Store</label>
+              <div class="control">
+                <input type="text" class="input" v-model="store" />
+              </div>
             </div>
-          </div>
 
-          <div class="field">
-            <label>price</label>
-            <div class="control">
-              <input type="number" class="input" min="0" v-model="price" />
+            <div class="field">
+              <label>Brand</label>
+              <div class="control">
+                <input type="text" class="input" v-model="brand" />
+              </div>
             </div>
-          </div>
 
-          <div class="field">
-            <label>Product Website</label>
-            <div class="control">
-              <input type="text" class="input" v-model="product_url" />
+            <div class="field">
+              <label>price</label>
+              <div class="control">
+                <input type="number" class="input" min="0" v-model="price" />
+              </div>
             </div>
-          </div>
 
-          <div class="field">
-            <label>Additional Notes</label>
-            <div class="control">
-              <textarea
-                type="text"
-                class="input"
-                maxlength="4096"
-                spellcheck="true"
-                v-model="notes"
-              />
+            <div class="field">
+              <label>Product Website</label>
+              <div class="control">
+                <input type="text" class="input" v-model="product_url" />
+              </div>
             </div>
+
+            <div class="field">
+              <label>Additional Notes</label>
+              <div class="control">
+                <textarea
+                  type="text"
+                  class="input"
+                  maxlength="4096"
+                  spellcheck="true"
+                  v-model="notes"
+                />
+              </div>
+            </div>
+            <div>Upload an image - use the Buefy upload tool</div>
+            <button class="button is-dark" @click="submitForm">Create</button>
           </div>
-          <div>Upload an image - use the Buefy upload tool</div>
-          <button class="button is-dark" @click="submitForm">Create</button>
         </div>
       </div>
     </div>
@@ -85,6 +85,7 @@
 
 <script>
 import axios from "axios";
+import ProductAutocompleteField from "@/components/ProductAutocompleteField.vue";
 export default {
   name: "ReviewCreate",
   data() {
@@ -99,9 +100,15 @@ export default {
       tags_all: [],
       tags_filtered: [],
       tags_selected: [],
+      products_filtered: [],
     };
   },
-
+  components: {
+    ProductAutocompleteField,
+  },
+  computed: {
+    //product: this.$refs.product.product,
+  },
   mounted() {
     document.title = "Reviewer | Create Review";
     this.getAllTags();
@@ -109,6 +116,7 @@ export default {
 
   methods: {
     async submitForm() {
+      console.log("product to sumbit: " + this.product);
       this.errors = [];
       if (this.product === "") {
         this.errors.push("Product name required");
@@ -119,10 +127,11 @@ export default {
       // submit
       if (!this.errors.length) {
         this.$store.commit("setIsLoading", true);
+
         const data = {
-          product: this.product,
-          store: this.store,
-          brand: this.brand,
+          product: { product: this.product },
+          store: { store: this.store },
+          brand: { brand: this.brand },
           rating: this.rating,
           price: this.price,
           product_url: this.product_url,
@@ -158,7 +167,7 @@ export default {
           this.tags_all = tags_all;
           this.tags_filtered = tags_all;
         })
-        .catch((errror) => {
+        .catch((error) => {
           console.log(error);
         });
 
@@ -169,6 +178,23 @@ export default {
         return option.toString().toLowerCase().indexOf(text.toLowerCase()) >= 0;
       });
     },
+
+    //async getProductSearch(text) {
+    //  console.log("Computing getProductSearch");
+    //  await axios
+    //    .get(`/api/v1/products?search=${text}&limit=100`)
+    //    .then((response) => {
+    //      const products = [];
+    //      for (let i = 0; i < response.data.results.length; i++) {
+    //        products.push(response.data.results[i].product);
+    //      }
+    //      console.log("Computing productSearch products: " + products);
+    //      this.products_filtered = products;
+    //    })
+    //    .catch((error) => {
+    //      console.log(error);
+    //    });
+    //},
   },
 };
 </script>
