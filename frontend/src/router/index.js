@@ -24,7 +24,7 @@ const routes = [
     component: Login
   },
   {
-    path: '/',
+    path: '/account',
     name: 'MyAccount',
     component: MyAccount,
     meta: {
@@ -40,11 +40,15 @@ const routes = [
     }
   },
   {
+    path: '/',
+    redirect: '/reviews'
+  },
+  {
     path: '/reviews',
     name: 'MyReviews',
     component: MyReviews,
     meta: {
-      requireLogin: false
+      requireLogin: true
     }
   },
   {

@@ -53,7 +53,7 @@
           <div class="navbar-item">
             <div class="buttons">
               <template v-if="$store.state.isAuthenticated">
-                <router-link to="/" class="button is-light"
+                <router-link to="/account" class="button is-light"
                   >My Account</router-link
                 >
               </template>
