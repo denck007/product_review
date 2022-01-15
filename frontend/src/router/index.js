@@ -47,14 +47,14 @@ const routes = [
       requireLogin: false
     }
   },
-  //{
-  //  path: '/reviews/:review_id',
-  //  name: 'Review',
-  //  component: ReviewDetail,
-  //  meta: {
-  //    requireLogin: true
-  //  }
-  //},
+  {
+    path: '/reviews/:review_id',
+    name: 'Review',
+    component: ReviewDetail,
+    meta: {
+      requireLogin: true
+    }
+  },
   {
     path: '/tags/:tag_slug',
     name: 'ReviewsByTag',

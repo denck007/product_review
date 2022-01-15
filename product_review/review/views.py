@@ -16,7 +16,7 @@ class ReviewModelViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     paginate_by = 10
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ["product", "tags__name", "notes", "brand", "store"]
+    filterset_fields = ["product", "tags__name", "tags__slug", "notes", "brand", "store"]
     search_fields = ["product", "tags__name", "notes", "brand", "store"]
 
     def get_queryset(self):
@@ -25,7 +25,7 @@ class ReviewModelViewSet(ModelViewSet):
     def create(self, request):
 
         tags_data = request.data.pop("tags")
-        tags = [Tag.objects.get_or_create(name=tag, user=request.user)[0] for tag in tags_data]
+        tags = [Tag.objects.get_or_create(name=tag.strip(), user=request.user)[0] for tag in tags_data]
         request.data["tags"] = []
 
         serializer = ReviewSerializer(data=request.data)
@@ -57,6 +57,7 @@ class TagModelViewSet(ModelViewSet):
     serializer_class = TagSerializer
     authentication_classes = [authentication.TokenAuthentication]
     permission_classes = [permissions.IsAuthenticated]
+    paginate_by = 1000
 
     def get_queryset(self):
         return Tag.objects.filter(user=self.request.user).all()

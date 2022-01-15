@@ -152,8 +152,8 @@ export default {
         .get("/api/v1/tags/")
         .then((response) => {
           const tags_all = [];
-          for (let i = 0; i < response.data.length; i++) {
-            tags_all.push(response.data[i].name);
+          for (let i = 0; i < response.data.results.length; i++) {
+            tags_all.push(response.data.results[i].name);
           }
           this.tags_all = tags_all;
           this.tags_filtered = tags_all;
@@ -161,6 +161,7 @@ export default {
         .catch((errror) => {
           console.log(error);
         });
+
       this.$store.commit("setIsLoading", false);
     },
     getFilteredTags(text) {

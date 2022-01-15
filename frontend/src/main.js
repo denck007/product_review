@@ -7,6 +7,7 @@ import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 require('@/assets/main.scss');
 
+Vue.use(Buefy);
 axios.defaults.baseURL = 'http://localhost:8000'
 
 Vue.config.productionTip = false

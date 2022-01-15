@@ -103,7 +103,9 @@ export default {
       axios.defaults.headers.common["Authorization"] = "";
     }
   },
-  mounted() {},
+  mounted() {
+    document.title = "Reviewer";
+  },
   computed: {},
 };
 </script>

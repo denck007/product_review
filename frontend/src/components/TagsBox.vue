@@ -4,7 +4,7 @@
       class="tag is-primary is-medium"
       v-for="tag in tags"
       v-bind:key="tag.id"
-      :to="`/reviews?&tags__name=${tag.name}`"
+      :to="`/reviews?&search_tag=${tag.slug}`"
     >
       {{ tag.name }}
     </router-link>
