@@ -52,23 +52,6 @@ class ReviewModelViewSet(ModelViewSet_User):
     filterset_fields = ["product__product", "tags__name", "tags__slug", "notes", "brand__brand", "store__store"]
     search_fields = ["product__product", "tags__name", "notes", "brand__brand", "store__store"]
 
-    # def create(self, request):
-    #    serializer = ReviewSerializer(data=request.data)
-    #    if serializer.is_valid():
-    #        try:
-    #            serializer.save(user=request.user)
-    #            return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #        except Exception as e:
-    #            exc_info = sys.exc_info()
-    #            print(exc_info)
-
-
-#
-#            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-#    for error in serializer.errors:
-#        print(error)
-#    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 class ProductModelViewSet(ModelViewSet_User):
     model = Product

@@ -1,25 +1,25 @@
-<template ref="product">
-  <b-field label="Product">
+<template ref="store">
+  <b-field label="Store">
     <b-autocomplete
       rounded
-      v-model="product"
-      :data="products_filtered"
+      v-model="store"
+      :data="stores_filtered"
       icon="magnify"
       clearable
       :open-on-focus="true"
       :keep-first="false"
       @blur="
         (option) => {
-          $emit('product', this.product);
+          $emit('store', this.store);
         }
       "
       @select="
         (option) => {
           selected = option;
-          $emit('product', option);
+          $emit('store', option);
         }
       "
-      @typing="getProductSearch"
+      @typing="getStoreSearch"
     >
     </b-autocomplete>
   </b-field>
@@ -28,26 +28,23 @@
 <script>
 import axios from "axios";
 export default {
-  name: "ProductAutocompleteField",
-  props: {
-    //product: "",
-  },
+  name: "StoreAutocompleteField",
   data() {
     return {
-      product: "",
-      products_filtered: [],
+      store: "",
+      stores_filtered: [],
     };
   },
   methods: {
-    async getProductSearch(text) {
+    async getStoreSearch(text) {
       await axios
-        .get(`/api/v1/products?search=${text}&limit=100`)
+        .get(`/api/v1/stores?search=${text}&limit=100`)
         .then((response) => {
-          const products = [];
+          const stores = [];
           for (let i = 0; i < response.data.results.length; i++) {
-            products.push(response.data.results[i].product);
+            stores.push(response.data.results[i].store);
           }
-          this.products_filtered = products;
+          this.stores_filtered = stores;
         })
         .catch((error) => {
           console.log(error);

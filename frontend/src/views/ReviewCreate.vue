@@ -33,20 +33,8 @@
               >
               </b-taginput>
             </b-field>
-
-            <div class="field">
-              <label>Store</label>
-              <div class="control">
-                <input type="text" class="input" v-model="store" />
-              </div>
-            </div>
-
-            <div class="field">
-              <label>Brand</label>
-              <div class="control">
-                <input type="text" class="input" v-model="brand" />
-              </div>
-            </div>
+            <StoreAutocompleteField v-on:store="(option) => (store = option)" />
+            <BrandAutocompleteField v-on:brand="(option) => (brand = option)" />
 
             <div class="field">
               <label>price</label>
@@ -86,6 +74,8 @@
 <script>
 import axios from "axios";
 import ProductAutocompleteField from "@/components/ProductAutocompleteField.vue";
+import BrandAutocompleteField from "@/components/BrandAutocompleteField.vue";
+import StoreAutocompleteField from "@/components/StoreAutocompleteField.vue";
 export default {
   name: "ReviewCreate",
   data() {
@@ -105,9 +95,8 @@ export default {
   },
   components: {
     ProductAutocompleteField,
-  },
-  computed: {
-    //product: this.$refs.product.product,
+    BrandAutocompleteField,
+    StoreAutocompleteField,
   },
   mounted() {
     document.title = "Reviewer | Create Review";

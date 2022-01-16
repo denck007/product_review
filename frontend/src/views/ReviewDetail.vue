@@ -23,17 +23,20 @@
 
       <TagsBox v-bind:tags="review.tags" />
 
-      <div v-if="review.notes">Brand: {{ review.brand.brand }}</div>
-      <div v-if="review.product_url">
-        Store:
-        <a
-          v-bind:href="review.product_url"
-          target="_blank"
-          rel="noreferrer noopener"
-          >{{ review.store }}</a
-        >
+      <div v-if="review.brand">Brand: {{ review.brand.brand }}</div>
+      <div v-if="review.store">
+        <div v-if="review.product_url">
+          Store:
+          <a
+            v-bind:href="review.product_url"
+            target="_blank"
+            rel="noreferrer noopener"
+            >{{ review.store }}</a
+          >
+        </div>
+        <div v-else>Store: {{ review.store.store }}</div>
       </div>
-      <div v-else>Store: {{ review.store.store }}</div>
+      <div v-else></div>
       <div v-if="review.price">
         <p>Price: ${{ review.price }}</p>
       </div>
