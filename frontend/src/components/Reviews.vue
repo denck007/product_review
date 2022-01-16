@@ -138,7 +138,7 @@ export default {
       perPage: 10,
       total: 0,
       search: "",
-      search_tag: "",
+      tag: "",
     };
   },
   props: {},
@@ -160,8 +160,8 @@ export default {
         this.search = this.$route.query.search;
       }
 
-      if (this.$route.query.search_tag) {
-        this.search_tag = this.$route.query.search_tag;
+      if (this.$route.query.tag) {
+        this.tag = this.$route.query.tag;
       }
     },
 
@@ -170,8 +170,8 @@ export default {
       this.updateSearchParams();
 
       let query_params = "";
-      if (this.search_tag != "") {
-        query_params += `&tags__slug=${this.search_tag}`;
+      if (this.tag != "") {
+        query_params += `&tags__slug=${this.tag}`;
       }
       if (this.search != "") {
         query_params += `&search=${this.search}`;
