@@ -37,8 +37,8 @@ class Product(models.Model):
 
 
 class Brand(models.Model):
-    brand = models.CharField(max_length=255, null=False)
-    slug = models.SlugField(unique=False, blank=True, null=True)
+    brand = models.CharField(max_length=255, blank=True, null=True)
+    slug = models.SlugField(unique=False, null=True)
     user = models.ForeignKey(User, related_name="user_brands", on_delete=models.CASCADE)
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -64,7 +64,7 @@ class Brand(models.Model):
 
 
 class Store(models.Model):
-    store = models.CharField(max_length=255, null=False)
+    store = models.CharField(max_length=255, blank=True, null=True)
     slug = models.SlugField(unique=False, blank=True, null=True)
     user = models.ForeignKey(User, related_name="user_stores", on_delete=models.CASCADE)
 

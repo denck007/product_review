@@ -52,39 +52,22 @@ class ReviewModelViewSet(ModelViewSet_User):
     filterset_fields = ["product__product", "tags__name", "tags__slug", "notes", "brand__brand", "store__store"]
     search_fields = ["product__product", "tags__name", "notes", "brand__brand", "store__store"]
 
-    def create(self, request):
-        tags_data = request.data.pop("tags")
-        tags = [Tag.objects.get_or_create(name=tag.strip(), user=request.user)[0] for tag in tags_data]
-        request.data["tags"] = []
+    # def create(self, request):
+    #    serializer = ReviewSerializer(data=request.data)
+    #    if serializer.is_valid():
+    #        try:
+    #            serializer.save(user=request.user)
+    #            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #        except Exception as e:
+    #            exc_info = sys.exc_info()
+    #            print(exc_info)
 
-        request.data["product"]["product"] = request.data["product"]["product"].strip()
-        product = Product.objects.get_or_create(product=request.data["product"]["product"], user=request.user)[0]
 
-        if request.data["brand"]["brand"] is not None:
-            request.data["brand"]["brand"] = request.data["brand"]["brand"].strip()
-            brand = Brand.objects.get_or_create(brand=request.data["brand"]["brand"], user=request.user)[0]
-        else:
-            brand = None
-
-        if request.data["store"]["store"] is not None:
-            request.data["store"]["store"] = request.data["store"]["store"].strip()
-            store = Store.objects.get_or_create(store=request.data["store"]["store"], user=request.user)[0]
-        else:
-            store = None
-
-        serializer = ReviewSerializer(data=request.data)
-        if serializer.is_valid():
-            try:
-                serializer.save(user=request.user, tags=tags, product=product, brand=brand, store=store)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                exc_info = sys.exc_info()
-                print(exc_info)
-
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        for error in serializer.errors:
-            print(error)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#
+#            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#    for error in serializer.errors:
+#        print(error)
+#    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductModelViewSet(ModelViewSet_User):

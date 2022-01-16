@@ -136,8 +136,12 @@ export default {
           price: this.price,
           product_url: this.product_url,
           notes: this.notes,
-          tags: this.tags_selected,
+          tags: [],
         };
+        this.tags_selected.forEach((tag) => {
+          data.tags.push({ name: tag });
+          console.log(tag);
+        });
 
         await axios
           .post("/api/v1/reviews", data)
@@ -178,23 +182,6 @@ export default {
         return option.toString().toLowerCase().indexOf(text.toLowerCase()) >= 0;
       });
     },
-
-    //async getProductSearch(text) {
-    //  console.log("Computing getProductSearch");
-    //  await axios
-    //    .get(`/api/v1/products?search=${text}&limit=100`)
-    //    .then((response) => {
-    //      const products = [];
-    //      for (let i = 0; i < response.data.results.length; i++) {
-    //        products.push(response.data.results[i].product);
-    //      }
-    //      console.log("Computing productSearch products: " + products);
-    //      this.products_filtered = products;
-    //    })
-    //    .catch((error) => {
-    //      console.log(error);
-    //    });
-    //},
   },
 };
 </script>

@@ -74,11 +74,17 @@
             </b-table-column>
 
             <b-table-column label="Brand" v-slot="props">
-              {{ props.row.brand.brand }}
+              <div v-if="props.row.brand">
+                {{ props.row.brand.brand }}
+              </div>
+              <div v-else></div>
             </b-table-column>
 
             <b-table-column label="Store" v-slot="props">
-              {{ props.row.store.store }}
+              <div v-if="props.row.store">
+                {{ props.row.store.store }}
+              </div>
+              <div v-else></div>
             </b-table-column>
 
             <b-table-column label="Created" v-slot="props">
@@ -98,9 +104,12 @@
                       <router-link :to="`/reviews/${props.row.id}`">
                         <strong>{{ props.row.product.product }}</strong>
                       </router-link>
-                      <div :v-if="props.row.price">${{ props.row.price }}</div>
-                      <div :v-if="props.row.store.store">
+                      <div v-if="props.row.price">${{ props.row.price }}</div>
+                      <div v-if="props.row.store">
                         {{ props.row.store.store }}
+                      </div>
+                      <div v-if="props.row.brand">
+                        {{ props.row.brand.brand }}
                       </div>
                       <div>
                         {{ props.row.notes }}
