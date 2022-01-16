@@ -8,7 +8,6 @@ import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import ReviewDetail from '../views/ReviewDetail.vue'
 import ReviewCreate from '../views/ReviewCreate.vue'
-import ReviewsByTag from '../views/ReviewsByTag.vue'
 
 Vue.use(VueRouter)
 
@@ -55,14 +54,6 @@ const routes = [
     path: '/reviews/:review_id',
     name: 'Review',
     component: ReviewDetail,
-    meta: {
-      requireLogin: true
-    }
-  },
-  {
-    path: '/tags/:tag_slug',
-    name: 'ReviewsByTag',
-    component: ReviewsByTag,
     meta: {
       requireLogin: true
     }
