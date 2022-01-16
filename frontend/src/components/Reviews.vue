@@ -158,10 +158,14 @@ export default {
     updateSearchParams() {
       if (this.$route.query.search) {
         this.search = this.$route.query.search;
+      } else {
+        this.search = "";
       }
 
       if (this.$route.query.tag) {
         this.tag = this.$route.query.tag;
+      } else {
+        this.tag = "";
       }
     },
 
@@ -201,9 +205,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log("to.name" + to.name);
       if (to.name === "MyReviews") {
-        console.log("Updating to.name: " + to.name);
         this.getMyReviews();
       }
     },
