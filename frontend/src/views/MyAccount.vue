@@ -23,12 +23,7 @@ import TagsBox from "@/components/TagsBox.vue";
 export default {
   name: "MyAccount",
   data() {
-    return {
-      reviews: [],
-      currentPage: 1,
-      perPage: 10,
-      total: 0,
-    };
+    return {};
   },
   components: {
     TimeAgo,
