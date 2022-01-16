@@ -46,7 +46,7 @@
               sortable
               v-slot="props"
             >
-              <router-link :to="`/reviews/${props.row.id}`">
+              <router-link :to="`/products?product=${props.row.product.slug}`">
                 <strong>{{ props.row.product.product }}</strong>
               </router-link>
             </b-table-column>
@@ -100,7 +100,9 @@
                 <div class="media-content">
                   <div class="content">
                     <div>
-                      <router-link :to="`/reviews/${props.row.id}`">
+                      <router-link
+                        :to="`/products?product=${props.row.product.slug}`"
+                      >
                         <strong>{{ props.row.product.product }}</strong>
                       </router-link>
                       <div v-if="props.row.price">${{ props.row.price }}</div>
@@ -139,6 +141,7 @@ export default {
       total: 0,
       search: "",
       tag: "",
+      product: "",
     };
   },
   props: {},
@@ -167,6 +170,12 @@ export default {
       } else {
         this.tag = "";
       }
+
+      if (this.$route.query.product) {
+        this.product = this.$route.query.product;
+      } else {
+        this.product = "";
+      }
     },
 
     async getMyReviews() {
@@ -179,6 +188,9 @@ export default {
       }
       if (this.search != "") {
         query_params += `&search=${this.search}`;
+      }
+      if (this.product != "") {
+        query_params += `&product__slug=${this.product}`;
       }
       console.log("query params: " + query_params);
       await axios

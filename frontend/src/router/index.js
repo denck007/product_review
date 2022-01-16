@@ -8,6 +8,7 @@ import Signup from '../views/Signup.vue'
 import Login from '../views/Login.vue'
 import ReviewDetail from '../views/ReviewDetail.vue'
 import ReviewCreate from '../views/ReviewCreate.vue'
+import ProductDetail from '../views/ProductDetail.vue'
 
 Vue.use(VueRouter)
 
@@ -54,6 +55,14 @@ const routes = [
     path: '/reviews/:review_id',
     name: 'Review',
     component: ReviewDetail,
+    meta: {
+      requireLogin: true
+    }
+  },
+  {
+    path: '/products',
+    name: 'Product',
+    component: ProductDetail,
     meta: {
       requireLogin: true
     }
