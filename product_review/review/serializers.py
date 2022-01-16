@@ -15,8 +15,11 @@ class ProductSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        slug = slugify(validated_data.product)
-        product = Product.objects.get_or_create(**validated_data, slug=slug)
+        validated_data["product"] = validated_data["product"].strip()
+        slug = slugify(validated_data["product"])
+        product = Product.objects.filter(slug=slug, user=validated_data["user"]).first()
+        if product is None:
+            product = Product.objects.get_or_create(**validated_data, slug=slug)[0]
         return product
 
 
@@ -31,8 +34,11 @@ class BrandSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        slug = slugify(validated_data.brand)
-        brand = Brand.objects.get_or_create(**validated_data, slug=slug)
+        validated_data["brand"] = validated_data["brand"].strip()
+        slug = slugify(validated_data["brand"])
+        brand = Brand.objects.filter(slug=slug, user=validated_data["user"]).first()
+        if brand is None:
+            brand = Brand.objects.get_or_create(**validated_data, slug=slug)[0]
         return brand
 
 
@@ -47,8 +53,11 @@ class StoreSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        slug = slugify(validated_data.store)
-        store = Store.objects.get_or_create(**validated_data, slug=slug)
+        validated_data["store"] = validated_data["store"].strip()
+        slug = slugify(validated_data["store"])
+        store = Store.objects.filter(slug=slug, user=validated_data["user"]).first()
+        if store is None:
+            store = Store.objects.get_or_create(**validated_data, slug=slug)[0]
         return store
 
 
@@ -95,23 +104,17 @@ class ReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = validated_data["user"]
 
-        product_name = validated_data["product"]["product"].strip()
-        product = Product.objects.get_or_create(product=product_name, user=user)[0]
-        validated_data["product"] = product
+        product_serializer = ProductSerializer(data=validated_data["product"])
+        if product_serializer.is_valid():
+            validated_data["product"] = product_serializer.save(user=user)
 
-        brand_name = validated_data["brand"]["brand"].strip()
-        if brand_name == "":
-            brand = None
-        else:
-            brand = Brand.objects.get_or_create(brand=brand_name, user=user)[0]
-        validated_data["brand"] = brand
+        brand_serialzier = BrandSerializer(data=validated_data["brand"])
+        if brand_serialzier.is_valid():
+            validated_data["brand"] = brand_serialzier.save(user=user)
 
-        store_name = validated_data["store"]["store"].strip()
-        if store_name == "":
-            store = None
-        else:
-            store = Store.objects.get_or_create(store=store_name, user=user)[0]
-        validated_data["store"] = store
+        store_serialzier = StoreSerializer(data=validated_data["store"])
+        if store_serialzier.is_valid():
+            validated_data["store"] = store_serialzier.save(user=user)
 
         tags_raw = validated_data.pop("tags")
         tags = [Tag.objects.get_or_create(name=tag["name"].strip(), user=user)[0] for tag in tags_raw]

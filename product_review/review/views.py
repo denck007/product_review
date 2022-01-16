@@ -49,7 +49,7 @@ class ModelViewSet_User(ModelViewSet):
 class ReviewModelViewSet(ModelViewSet_User):
     model = Review
     serializer_class = ReviewSerializer
-    filterset_fields = ["product__product", "tags__name", "tags__slug", "notes", "brand__brand", "store__store"]
+    filterset_fields = ["product__slug", "tags__name", "tags__slug", "notes", "brand__slug", "store__slug"]
     search_fields = ["product__product", "tags__name", "notes", "brand__brand", "store__store"]
 
 
@@ -58,6 +58,7 @@ class ProductModelViewSet(ModelViewSet_User):
     serializer_class = ProductSerializer
     filterset_fields = [
         "product",
+        "slug",
     ]
     search_fields = [
         "product",
