@@ -74,14 +74,18 @@
 
             <b-table-column label="Brand" v-slot="props">
               <div v-if="props.row.brand">
-                {{ props.row.brand.brand }}
+                <router-link :to="`/reviews?brand=${props.row.brand.slug}`">
+                  <strong>{{ props.row.brand.brand }}</strong>
+                </router-link>
               </div>
               <div v-else></div>
             </b-table-column>
 
             <b-table-column label="Store" v-slot="props">
               <div v-if="props.row.store">
-                {{ props.row.store.store }}
+                <router-link :to="`/reviews?store=${props.row.store.slug}`">
+                  <strong>{{ props.row.store.store }}</strong>
+                </router-link>
               </div>
               <div v-else></div>
             </b-table-column>
@@ -142,6 +146,8 @@ export default {
       search: "",
       tag: "",
       product: "",
+      brand: "",
+      store: "",
     };
   },
   props: {},
@@ -176,6 +182,18 @@ export default {
       } else {
         this.product = "";
       }
+
+      if (this.$route.query.brand) {
+        this.brand = this.$route.query.brand;
+      } else {
+        this.brand = "";
+      }
+
+      if (this.$route.query.store) {
+        this.store = this.$route.query.store;
+      } else {
+        this.store = "";
+      }
     },
 
     async getMyReviews() {
@@ -191,6 +209,12 @@ export default {
       }
       if (this.product != "") {
         query_params += `&product__slug=${this.product}`;
+      }
+      if (this.brand != "") {
+        query_params += `&brand__slug=${this.brand}`;
+      }
+      if (this.store != "") {
+        query_params += `&store__slug=${this.store}`;
       }
       console.log("query params: " + query_params);
       await axios

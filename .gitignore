@@ -55,3 +55,4 @@ pnpm-debug.log*
 # Project specific
 db.sqlite3
 media/
+**/static_root
