@@ -1,0 +1,64 @@
+version: '3.3'
+
+services:
+  api:
+    build:
+      context: ./product_review
+      dockerfile: api.dockerfile
+    restart: "unless-stopped"
+    container_name: "product_review_api"
+    ports:
+      - 8080:8080
+    expose:
+      - 8080
+    volumes:
+      - /home/neil/product_review/product_review:/product_review
+    command:
+      [
+        "gunicorn",
+        "product_review.wsgi:application",
+        "--bind=0.0.0.0:8080",
+        "--workers=1"
+      ]
+
+  #dashboard:
+  #  build: .
+  #  depends_on:
+  #    - api
+  #  image: neillti/rss:0.4.2
+  #  restart: "unless-stopped"
+  #  container_name: "rss_dash"
+  #  ports:
+  #    - "${DASHBOARD_PORT}:${DASHBOARD_PORT}"
+  #  expose:
+  #    - ${DASHBOARD_PORT}
+  #  environment:
+  #    - API_HOST
+  #    - API_PORT
+  #    - DASHBOARD_HOST
+  #    - DASHBOARD_PORT
+  #    - LABELSTUDIO_HOST
+  #    - LABELSTUDIO_PORT
+  #  command:
+  #    [
+  #      "gunicorn",
+  #      "main_viewer:server",
+  #      "-b",
+  #      ":$DASHBOARD_PORT",
+  #      "--threads",
+  #      "$DASHBOARD_THREADS"
+  #    ]
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: nginx.dockerfile
+    container_name: "product_review_nginx"
+    restart: "unless-stopped"
+    ports:
+      - 8000:80
+    depends_on:
+      - api
+    volumes:
+      - /home/neil/product_review/product_review/static/:/static:rw
+    command: nginx -g "daemon off;" # note: the nginx image runs envsubst if files are in templates dir

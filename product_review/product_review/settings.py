@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "192.168.0.104", "0.0.0.0"]
 
+CSRF_COOKIE_SECURE = False
+CSRF_TRUSTED_ORIGINS = ["http://192.168.0.104:8000", "http://192.168.0.104:8081"]
+CSRF_COOKIE_NAME = "XSRF-TOKEN"
+SESSION_COOKIE_SECURE = False
+
 
 # Application definition
 
@@ -46,7 +51,7 @@ INSTALLED_APPS = [
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOWED_ORGINS = ["http://0.0.0.0:8080"]
+CORS_ALLOWED_ORGINS = ["http://0.0.0.0:8080", "http://192.168.0.104:*"]
 
 
 MIDDLEWARE = [
@@ -125,7 +130,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
+STATIC_ROOT = "static"
 STATIC_URL = "static/"
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media/"

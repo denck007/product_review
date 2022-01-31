@@ -8,8 +8,12 @@ import 'buefy/dist/buefy.css'
 require('@/assets/main.scss');
 
 Vue.use(Buefy);
-axios.defaults.baseURL = 'http://192.168.0.104:8000'
-Vue.config.productionTip = false
+axios.defaults.baseURL = 'http://192.168.0.104:8000';
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
+
+Vue.config.productionTip = false;
+
 
 new Vue({
     router,
